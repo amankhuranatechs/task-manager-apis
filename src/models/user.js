@@ -47,12 +47,39 @@ const userSchema = mongoose.Schema({
             type: String,
             required: true
         }
-    }]
+    }],
+    avatar: {
+        type: Buffer
+    }
+},{
+    timestamps: true
+});
+
+
+
+userSchema.methods.toJSON =  function() {  // Any function written async before it always returns promise
+    const user = this;
+    const userObject = user.toObject();
+
+    delete userObject.password;
+    delete userObject.tokens;  
+    
+    return userObject;
+}
+
+
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
 })
+
+
+
  /// this is an instant of user, instants method
 userSchema.methods.generateAuthToken = async function() {
     const user = this;
-    const token = jwt.sign({ _id: user._id.toString()}, 'nodeapis');
+    const token = jwt.sign({ _id: user._id.toString()}, process.env.JWT_SECRET);
     user.token =  user.tokens.push({token});
     await user.save();
 
@@ -73,7 +100,6 @@ userSchema.statics.findByCredentials = async (email,password ) => {
     if(!isMatch){
         throw new Error('Unable to login')
     }
-    console.log('herer');
     return user;
 }
 
@@ -86,9 +112,17 @@ userSchema.pre('save',  async function(next) {
         user.password = await bcrypt.hash(user.password, 8);
     }
     
-    console.log('Just before save it',user);
+    // console.log('Just before save it',user);
     next();
 })
+
+const Task = require('./task');
+userSchema.pre('remove', async function(next){
+    const user = this;
+    await Task.deleteMany({ owner : user._id})
+    next()
+})
+
 
 // user.password = await bcrypt.hash(user.password, 8);
 const User = mongoose.model('User', userSchema);
