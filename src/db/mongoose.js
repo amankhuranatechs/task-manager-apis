@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+//@ts-ignore
+let mongoose = require('mongoose');
 const validator1 = require('validator');
 
 mongoose.connect(process.env.MONGODB_URL);

@@ -3,7 +3,6 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-
 const userSchema = mongoose.Schema({
     name: {
         type: String,
@@ -57,7 +56,7 @@ const userSchema = mongoose.Schema({
 
 
 
-userSchema.methods.toJSON =  function() {  // Any function written async before it always returns promise
+userSchema.methods.toJSON = function() {  // Any function written async before it always returns promise
     const user = this;
     const userObject = user.toObject();
 
@@ -127,9 +126,6 @@ userSchema.pre('remove', async function(next){
 // user.password = await bcrypt.hash(user.password, 8);
 const User = mongoose.model('User', userSchema);
 
-
-
-
 const User1 = mongoose.model('User1', {
     name: {
         type: String,
@@ -169,23 +165,20 @@ const User1 = mongoose.model('User1', {
     }
 });
 
-// fdasfl345
-// fasdf
-// 
 /**
  * create a new User
  * 
  */
-    // const me = new User({   
-    //     name: 'Noor2',
-    //     email: 'noor2@finxera.com ',
-    //     password: 'abcd1234'
-    // })
+// const me = new User({   
+//     name: 'Noor2',
+//     email: 'noor2@finxera.com ',
+//     password: 'abcd1234'
+// })
 
-    // me.save().then((me)=>{
-    //     console.log(me)
-    // }).catch((e)=>{
-    //     console.log('Error',e)
-    // })
+// me.save().then((me)=>{
+//     console.log(me)
+// }).catch((e)=>{
+//     console.log('Error',e)
+// })
 
-    module.exports = User;
+module.exports = User;

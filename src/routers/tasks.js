@@ -4,10 +4,9 @@ const router = express.Router();
 const auth = require('../middlewares/auth.js');
 const Task = require('../models/task');
 
+const allowedUpdates = [ 'email', 'name', 'age', 'password', 'description', 'completed' ];
 
-const allowedUpdates = [ 'email', 'name', 'age', 'password', 'description', 'completed'];
-
-//Deleting a task                                                                 
+// Deleting a task                                                                 
 router.delete('/tasks/:id', auth, async (req, res) => {
     const _id = req.params.id;
     try {
@@ -22,6 +21,7 @@ router.delete('/tasks/:id', auth, async (req, res) => {
     }
 })
 
+//Updating the task
 router.patch('/tasks/:id',auth,  async (req, res) => {
     const updates = Object.keys(req.body);
     const _id = req.params.id;
@@ -51,6 +51,7 @@ router.patch('/tasks/:id',auth,  async (req, res) => {
 
 })
 
+// Creating the task
 router.post('/tasks', auth, async ( req, res ) => {
     // const task = new Task(req.body);
     const task = new Task({
@@ -72,6 +73,7 @@ router.post('/tasks', auth, async ( req, res ) => {
     // })
 })
 
+//Getting the task
 router.get('/tasks', auth, async (req, res) => {
     // console.log(req.query)
     const match = {}
@@ -121,6 +123,7 @@ router.get('/tasks', auth, async (req, res) => {
     // })
 })
 
+//Get a task
 router.get('/tasks/:id', auth, async (req,res) => {
     const _id = req.params.id;
 
@@ -144,7 +147,5 @@ router.get('/tasks/:id', auth, async (req,res) => {
     //     res.status(500).send(e);
     // })
 })
-
-
 
 module.exports = router;

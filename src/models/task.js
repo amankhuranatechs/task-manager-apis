@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+//@ts-ignore
+let mongoose = require('mongoose');
 const validator = require('validator');
-
 
 const taskSchema = mongoose.Schema({
     description: {
@@ -25,8 +25,7 @@ taskSchema.pre('save', function(next) {
     next()
 })
 
-const Task = mongoose.model('Task',taskSchema )
-
+const Task = mongoose.model('Task', taskSchema);
 
 const Task1 = mongoose.model('Task1', {
     description: {
